@@ -28,17 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
+            panel1 = new Panel();
+            btnAllPokemon = new Button();
+            panel1.SuspendLayout();
             SuspendLayout();
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(btnAllPokemon);
+            panel1.Dock = DockStyle.Fill;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(970, 609);
+            panel1.TabIndex = 0;
+            // 
+            // btnAllPokemon
+            // 
+            btnAllPokemon.Location = new Point(50, 50);
+            btnAllPokemon.Name = "btnAllPokemon";
+            btnAllPokemon.Size = new Size(100, 100);
+            btnAllPokemon.TabIndex = 2;
+            btnAllPokemon.Text = "Todos os Pokemons";
+            btnAllPokemon.UseVisualStyleBackColor = true;
             // 
             // UserControlInitial
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(panel1);
             Name = "UserControlInitial";
             Size = new Size(970, 609);
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
+
+        private Panel panel1;
+        private Button btnAllPokemon;
     }
 }

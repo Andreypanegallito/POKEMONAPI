@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Metrics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
+using _7DAYSOFCODE.Classes;
+using _7DAYSOFCODE.components;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace _7DAYSOFCODE
 {
@@ -19,6 +15,8 @@ namespace _7DAYSOFCODE
 
         int counta;
         private Dictionary<string, string> pokemons = new Dictionary<string, string>();
+        private Panel panel;
+        private UserControlLoader loader;
 
         public UserControlAllPokemon()
         {
@@ -28,81 +26,98 @@ namespace _7DAYSOFCODE
             flowLayoutPanel.AutoScroll = true;
             this.Controls.Add(flowLayoutPanel);
 
+            // Crie o "loader"
+            loader = new UserControlLoader();
+
             BuscarPokemons();
         }
 
-        private class Pokemon
+        private void MostrarLoader()
         {
-            public string name { get; set; }
-            public string url { get; set; }
+            this.Invalidate();
+
+            // Adicione o "loader" ao Controls
+            this.Controls.Add(loader);
+
+            // Defina o Anchor do loader
+            loader.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+
+            // Aumente o tamanho do loader
+            int newWidthLoader = Convert.ToInt32(this.Width);
+            //int newWidthLoader = Convert.ToInt32(Math.Round(this.Width * 0.75));
+            int newHeightLoader = Convert.ToInt32(this.Height);
+            //int newHeightLoader = Convert.ToInt32(Math.Round(this.Height * 0.75));
+            loader.Size = new Size(newWidthLoader, newHeightLoader);
+
+            var panelLoader = loader.Controls[0];
+            var labelTextLoader = panelLoader.Controls[0];
+
+            this.Invalidate();
+
+            loader.BringToFront();
+
+            // Force a atualização da tela
+            this.Invalidate();
         }
 
-        private class AllPokemons
+        private void UserControlAllPokemon_SizeChanged(object sender, EventArgs e)
         {
-            public int count { get; set; }
-            public string? next { get; set; }
-            public string? previus { get; set; }
-            public List<Pokemon> results { get; set; }
+            loader.Size = this.Size;
+        }
+
+        private void OcultarLoader()
+        {
+            // Remova o "loader" do Controls
+            this.Controls.Remove(loader);
         }
 
         private async void BuscarPokemons()
         {
-            var httpClient = new HttpClient();
+            MostrarLoader();
 
-            // Crie um painel para escurecer o fundo
-            Panel panel = new Panel();
-            panel.Dock = DockStyle.Fill;
-            //panel.BackColor = Color.FromArgb(128, 0, 0, 0);  // Cor preta semi-transparente
-            this.Controls.Add(panel);
+            // Carregar os Pokemons em segundo plano
+            List<Pokemon> pokemons = await PokemonCache.GetPokemonsAsync();
 
-            // Crie um novo Label
-            Label label = new Label();
-            label.Text = "Carregando...";
-            panel.Controls.Add(label);
-
-            // Crie a barra de progresso
-            ProgressBar progressBar = new ProgressBar();
-            progressBar.Minimum = 0;
-            progressBar.Maximum = 100;  // Atualize isso com o número real de itens
-            progressBar.Top = (this.ClientSize.Height - progressBar.Height) / 2;
-            progressBar.Left = (this.ClientSize.Width - progressBar.Width) / 2;
-            panel.Controls.Add(progressBar);
-
-
-            try
+            if (pokemons != null)
             {
-                var response = await httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=300");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var jsonDocument = JsonDocument.Parse(content);
-                    AllPokemons allPokemons = JsonSerializer.Deserialize<AllPokemons>(content);
-                    var count = jsonDocument.RootElement.GetProperty("count").GetInt32();
-                    var bbb = new Pokemon();
-                    bbb = allPokemons.results[0];
-                    counta = count;
-
-                    IncluirItens(allPokemons.results);
-
-
-                }
-                else
-                {
-                    Console.WriteLine($"Erro: {response.StatusCode}");
-                }
+                IncluirItens(pokemons);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exceção capturada: {ex}");
-            }
-            finally
-            {
-                // Mostre o painel e a barra de progresso
-                panel.Visible = true;
-                progressBar.Visible = true;
-            }
+
+            OcultarLoader();
         }
+
+        //private static async Task<List<Pokemon>> GetPokemonsAsync()
+        //{
+        //    var httpClient = new HttpClient();
+
+        //    try
+        //    {
+        //        var response = await httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=300");
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            var content = await response.Content.ReadAsStringAsync();
+        //            var jsonDocument = JsonDocument.Parse(content);
+        //            AllPokemons allPokemons = JsonSerializer.Deserialize<AllPokemons>(content);
+        //            var count = jsonDocument.RootElement.GetProperty("count").GetInt32();
+        //            List<Pokemon> pokemons;
+        //            pokemons = allPokemons?.results;
+
+
+        //            return pokemons;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine($"Erro: {response.StatusCode}");
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Exceção capturada: {ex}");
+        //        return null;
+        //    }
+        //}
 
         private void IncluirItens(List<Pokemon> Pokemons)
         {
@@ -116,10 +131,22 @@ namespace _7DAYSOFCODE
 
                 // Associe a URL do Pokémon ao botão
                 button.Tag = Pokemons[i].url;
+                Pokemon pokemon = Pokemons[i];
+                button.Click += (sender, e) => GoToPokemonDetails(pokemon);
 
                 // Adicione o botão ao FlowLayoutPanel
                 flowLayoutPanel.Controls.Add(button);
             }
+        }
+
+        private async void GoToPokemonDetails(Pokemon pokemon)
+        {
+            this.Controls.Clear();
+            RemoverTela();
+            var urlPokemon = pokemon.url.ToString();
+            UserControlPokemon ucPokemon = new UserControlPokemon(urlPokemon);
+            ucPokemon.Dock = DockStyle.Fill;
+            this.Controls.Add(ucPokemon);
         }
     }
 }

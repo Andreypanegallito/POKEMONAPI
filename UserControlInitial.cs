@@ -15,6 +15,16 @@ namespace _7DAYSOFCODE
         public UserControlInitial()
         {
             InitializeComponent();
+
+            btnAllPokemon.Click += new EventHandler(GoToAllPokemon);
+        }
+
+        private async void GoToAllPokemon(object sender, EventArgs e)
+        {
+            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon();
+            ucAllPokemon.Dock = DockStyle.Fill;
+            this.Controls.Clear();
+            this.Controls.Add(ucAllPokemon);
         }
     }
 }

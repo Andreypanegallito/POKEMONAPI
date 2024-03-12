@@ -10,34 +10,28 @@ namespace _7DAYSOFCODE
 {
     public partial class Initial : Form
     {
-        
+
         public Initial()
         {
             InitializeComponent();
 
-            var button = new Button
-            {
-                Text = "Todos os Pokemons",
-                Location = new Point(50, 50),
-                Width = 100,
-                Height = 100,
-            };
-
-
-            button.Click += new EventHandler(GoToAllPokemon);
-
-            Controls.Add(button);
+            ShowInitial();
         }
 
-
-
-        private async void GoToAllPokemon(object sender, EventArgs e)
+        private void ShowInitial()
         {
-            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon();
-            ucAllPokemon.Dock = DockStyle.Fill;
+            UserControlInitial ucInitial = new UserControlInitial();
+            ucInitial.Dock = DockStyle.Fill;
             this.Controls.Clear();
-            this.Controls.Add(ucAllPokemon);
+            this.Controls.Add(ucInitial);
         }
+
+
+        public  void RemoverTela()
+        {
+            this.Controls.Clear();
+        }
+
     }
 
 }
