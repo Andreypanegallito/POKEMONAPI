@@ -7,10 +7,12 @@ namespace _7DAYSOFCODE.components
 {
     public partial class UserControlPokemon : UserControl
     {
+        private readonly Initial initial;
         private string urlPokemon;
 
-        public UserControlPokemon(string urlPokemon)
+        public UserControlPokemon(Initial initial, string urlPokemon)
         {
+            this.initial = initial;
             InitializeComponent();
             this.urlPokemon = urlPokemon;
 
@@ -65,7 +67,7 @@ namespace _7DAYSOFCODE.components
 
         private void GoToHome(object sender, EventArgs e)
         {
-            UserControlInitial ucInitial = new UserControlInitial();
+            UserControlInitial ucInitial = new UserControlInitial(initial);
             ucInitial.Dock = DockStyle.Fill;
             this.Controls.Clear();
             this.Controls.Add(ucInitial);
@@ -73,7 +75,7 @@ namespace _7DAYSOFCODE.components
 
         private void GoToAllPokemon(object sender, EventArgs e)
         {
-            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon();
+            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon(initial);
             ucAllPokemon.Dock = DockStyle.Fill;
             this.Controls.Clear();
             this.Controls.Add(ucAllPokemon);

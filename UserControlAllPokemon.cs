@@ -10,6 +10,7 @@ namespace _7DAYSOFCODE
 {
     public partial class UserControlAllPokemon : UserControl
     {
+        private readonly Initial initial;
         FlowLayoutPanel flowLayoutPanel = new FlowLayoutPanel();
 
 
@@ -18,8 +19,10 @@ namespace _7DAYSOFCODE
         private Panel panel;
         private UserControlLoader loader;
 
-        public UserControlAllPokemon()
+
+        public UserControlAllPokemon(Initial initial)
         {
+            this.initial = initial;
             InitializeComponent();
 
             flowLayoutPanel.Dock = DockStyle.Fill;
@@ -86,42 +89,8 @@ namespace _7DAYSOFCODE
             OcultarLoader();
         }
 
-        //private static async Task<List<Pokemon>> GetPokemonsAsync()
-        //{
-        //    var httpClient = new HttpClient();
-
-        //    try
-        //    {
-        //        var response = await httpClient.GetAsync("https://pokeapi.co/api/v2/pokemon/?offset=0&limit=300");
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var content = await response.Content.ReadAsStringAsync();
-        //            var jsonDocument = JsonDocument.Parse(content);
-        //            AllPokemons allPokemons = JsonSerializer.Deserialize<AllPokemons>(content);
-        //            var count = jsonDocument.RootElement.GetProperty("count").GetInt32();
-        //            List<Pokemon> pokemons;
-        //            pokemons = allPokemons?.results;
-
-
-        //            return pokemons;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine($"Erro: {response.StatusCode}");
-        //            return null;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Exceção capturada: {ex}");
-        //        return null;
-        //    }
-        //}
-
         private void IncluirItens(List<Pokemon> Pokemons)
         {
-
             for (int i = 0; i < Pokemons.Count; i++)
             {
                 // Crie um novo botão para o Pokémon
@@ -142,9 +111,9 @@ namespace _7DAYSOFCODE
         private async void GoToPokemonDetails(Pokemon pokemon)
         {
             this.Controls.Clear();
-            RemoverTela();
+            //RemoverTela();
             var urlPokemon = pokemon.url.ToString();
-            UserControlPokemon ucPokemon = new UserControlPokemon(urlPokemon);
+            UserControlPokemon ucPokemon = new UserControlPokemon(initial, urlPokemon);
             ucPokemon.Dock = DockStyle.Fill;
             this.Controls.Add(ucPokemon);
         }

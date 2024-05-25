@@ -12,8 +12,10 @@ namespace _7DAYSOFCODE
 {
     public partial class UserControlInitial : UserControl
     {
-        public UserControlInitial()
+        private readonly Initial initial;
+        public UserControlInitial(Initial initial)
         {
+            this.initial = initial;
             InitializeComponent();
 
             btnAllPokemon.Click += new EventHandler(GoToAllPokemon);
@@ -21,7 +23,7 @@ namespace _7DAYSOFCODE
 
         private async void GoToAllPokemon(object sender, EventArgs e)
         {
-            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon();
+            UserControlAllPokemon ucAllPokemon = new UserControlAllPokemon(initial);
             ucAllPokemon.Dock = DockStyle.Fill;
             this.Controls.Clear();
             this.Controls.Add(ucAllPokemon);

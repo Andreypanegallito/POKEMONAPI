@@ -20,7 +20,7 @@ namespace _7DAYSOFCODE
 
         private void ShowInitial()
         {
-            UserControlInitial ucInitial = new UserControlInitial();
+            UserControlInitial ucInitial = new UserControlInitial(this);
             ucInitial.Dock = DockStyle.Fill;
             this.Controls.Clear();
             this.Controls.Add(ucInitial);
