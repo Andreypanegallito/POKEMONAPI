@@ -91,21 +91,23 @@ namespace _7DAYSOFCODE
 
         private void IncluirItens(List<Pokemon> Pokemons)
         {
-            for (int i = 0; i < Pokemons.Count; i++)
-            {
-                // Crie um novo botão para o Pokémon
-                Button button = new Button();
-                button.Text = Pokemons[i].name;
-                button.AutoSize = true;
+            flowLayoutPanel.SuspendLayout();
 
-                // Associe a URL do Pokémon ao botão
-                button.Tag = Pokemons[i].url;
-                Pokemon pokemon = Pokemons[i];
+            foreach (var pokemon in Pokemons)
+            {
+                var button = new Button
+                {
+                    Text = pokemon.name,
+                    AutoSize = true,
+                    Tag = pokemon.url
+                };
+
                 button.Click += (sender, e) => GoToPokemonDetails(pokemon);
 
-                // Adicione o botão ao FlowLayoutPanel
                 flowLayoutPanel.Controls.Add(button);
             }
+
+            flowLayoutPanel.ResumeLayout();
         }
 
         private async void GoToPokemonDetails(Pokemon pokemon)

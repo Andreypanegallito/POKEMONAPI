@@ -30,9 +30,10 @@ namespace _7DAYSOFCODE.Classes
         public Sprite sprites { get; set; }
     }
 
-    public  class PokemonCache
+    public class PokemonCache
     {
         private static List<Pokemon> _pokemons;
+        private static Dictionary<string, Pokemon> _pokemonDetailsCache = new Dictionary<string, Pokemon>();
 
         public static async Task<List<Pokemon>> GetPokemonsAsync()
         {
@@ -62,6 +63,52 @@ namespace _7DAYSOFCODE.Classes
                     pokemons = allPokemons?.results;
 
                     return pokemons;
+                }
+                else
+                {
+                    Console.WriteLine($"Erro: {response.StatusCode}");
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exceção capturada: {ex}");
+                return null;
+            }
+        }
+
+        public static async Task<Pokemon> GetPokemonDetailsAsync(string urlPokemon)
+        {
+            if (_pokemonDetailsCache.TryGetValue(urlPokemon, out var cachedPokemon))
+            {
+                return cachedPokemon;
+            }
+
+            // Se não estiver no cache, faça a requisição à API
+            var pokemon = await FetchPokemonDetailsFromAPI(urlPokemon);
+            if (pokemon != null)
+            {
+                // Adicione o Pokémon ao cache de detalhes
+                _pokemonDetailsCache[urlPokemon] = pokemon;
+            }
+
+            return pokemon;
+        }
+
+        private static async Task<Pokemon> FetchPokemonDetailsFromAPI(string urlPokemon)
+        {
+            var httpClient = new HttpClient();
+
+            try
+            {
+                var response = await httpClient.GetAsync(urlPokemon);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    Pokemon pokemon = JsonSerializer.Deserialize<Pokemon>(content);
+
+                    return pokemon;
                 }
                 else
                 {

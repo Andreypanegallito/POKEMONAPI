@@ -24,7 +24,7 @@ namespace _7DAYSOFCODE.components
 
         private async void LoadPokemonAsync()
         {
-            Pokemon pokemon = await GetPokemonAsync();
+            Pokemon pokemon = await PokemonCache.GetPokemonDetailsAsync(urlPokemon);
             if (pokemon != null)
             {
                 var teste = pokemon.sprites.other.official_artwork;
@@ -33,35 +33,6 @@ namespace _7DAYSOFCODE.components
                 lblWeight.Text = $"{pokemon.weight}";
                 lblBase.Text = $"{pokemon.base_experience}";
                 imgPokemon.ImageLocation = $"{teste.front_default}";
-            }
-        }
-
-        private async Task<Pokemon> GetPokemonAsync()
-        {
-            var httpClient = new HttpClient();
-
-            try
-            {
-                var response = await httpClient.GetAsync(urlPokemon);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-                    var jsonDocument = JsonDocument.Parse(content);
-                    Pokemon pokemon = JsonSerializer.Deserialize<Pokemon>(content);
-
-                    return pokemon;
-                }
-                else
-                {
-                    Console.WriteLine($"Erro: {response.StatusCode}");
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Exceção capturada: {ex}");
-                return null;
             }
         }
 
