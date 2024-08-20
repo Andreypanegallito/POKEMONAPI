@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace _7DAYSOFCODE.Classes
+namespace POKEMONAPI.Classes
 {
     public class Ability
     {

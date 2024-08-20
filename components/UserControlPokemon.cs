@@ -1,9 +1,9 @@
 ﻿using System;
-using _7DAYSOFCODE.Classes;
+using POKEMONAPI.Classes;
 using System.Text.Json;
 
 
-namespace _7DAYSOFCODE.components
+namespace POKEMONAPI.components
 {
     public partial class UserControlPokemon : UserControl
     {

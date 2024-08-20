@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Text.Json;
-using _7DAYSOFCODE.Classes;
-using _7DAYSOFCODE.components;
+using POKEMONAPI.Classes;
+using POKEMONAPI.components;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace _7DAYSOFCODE
+namespace POKEMONAPI
 {
     public partial class UserControlAllPokemon : UserControl
     {

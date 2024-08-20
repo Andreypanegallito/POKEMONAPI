@@ -1,4 +1,4 @@
-﻿namespace _7DAYSOFCODE
+﻿namespace POKEMONAPI
 {
     partial class Component1
     {

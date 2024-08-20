@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace _7DAYSOFCODE
+namespace POKEMONAPI
 {
     public partial class Initial : Form
     {

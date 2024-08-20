@@ -1,4 +1,4 @@
-﻿namespace _7DAYSOFCODE.components
+﻿namespace POKEMONAPI.components
 {
     partial class UserControlPokemon
     {

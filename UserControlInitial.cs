@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace _7DAYSOFCODE
+namespace POKEMONAPI
 {
     public partial class UserControlInitial : UserControl
     {

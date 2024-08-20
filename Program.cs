@@ -1,4 +1,4 @@
-namespace _7DAYSOFCODE
+namespace POKEMONAPI
 {
     internal static class Program
     {

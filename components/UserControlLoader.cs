@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ProgressBar = System.Windows.Forms.ProgressBar;
 
-namespace _7DAYSOFCODE.components
+namespace POKEMONAPI.components
 {
     public partial class UserControlLoader : UserControl
     {
